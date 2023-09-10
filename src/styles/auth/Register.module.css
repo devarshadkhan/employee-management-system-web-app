@@ -2,10 +2,11 @@
     width: 500px;
     max-width: 100%;
     margin: 0 auto;
-    display: flex;
+    padding: 3rem 0 2rem;
+    /* display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 100vh; */
 }
 .login_wrp h1{
     color: #000;
@@ -43,6 +44,9 @@ margin: 0;
 }
 
 .login_wrp form input{
+    margin: 15px 0;
+}
+.login_wrp form select{
     margin: 15px 0;
 }
 

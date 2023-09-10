@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from "@/styles/auth/Login.module.css";
 import axios from "axios";
+import classNames from "classnames";
 const login = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
@@ -20,16 +21,16 @@ const login = () => {
             <div className="col-12">
               <h1>Account Login</h1>
               <p>
-                If you are already a member you can login with your email
-                address and password.
+                If you are already a member you can login with <span>your email
+                address and password.</span>
               </p>
-              <div>
+              <form>
                 <div className={styles.login}>
                   <p>Email address</p>
                   <div class="form-floating mb-3">
                     <input
                       type="text"
-                      class="form-control"
+                      className={classNames("form-control",styles.inputs )}
                       id="floatingInput"
                       placeholder="name@example.com"
                       value={email}
@@ -41,7 +42,7 @@ const login = () => {
                   <div class="form-floating">
                     <input
                       type="password"
-                      class="form-control"
+                       className={classNames("form-control",styles.inputs )}
                       id="floatingPassword"
                       placeholder="Password"
                       value={password}
@@ -50,9 +51,9 @@ const login = () => {
                     <label for="floatingPassword">Password</label>
                   </div>
 
-                  <button onClick={login_User}>Login</button>
+                  <button type="button" onClick={login_User}>Login</button>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
         </div>
