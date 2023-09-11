@@ -2,129 +2,222 @@ import React, { useState } from "react";
 import styles from "@/styles/auth/Register.module.css";
 import axios from "axios";
 import classNames from "classnames";
+import { useForm } from "react-hook-form";
+import { useRouter } from "next/router";
+import { ToastContainer, toast } from "react-toastify";
 const register = () => {
-  const [fName, setFName] = useState();
-  const [lName, setLName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState();
-  const [gender, setGender] = useState();
-  console.log(gender);
-  const register_User = async () => {
-    const res = await axios.post(
-      "https://emp-api-v2.onrender.com/auth/register",
-      {
-        Fname: fName,
-        Lname: lName,
-        email: email,
-        password: password,
-        confirmPassword: confirmPassword,
-        gender: gender,
-      }
-    );
-    // localStorage.setItem("token", res.data.token);
-    console.log(res);
+  const router = useRouter();
+  const [messend, mesSend] = useState();
+  const {
+    register,
+    setValue,
+    getValues,
+    trigger,
+    reset,
+    watch,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: "onChange", reValidateMode: "onChange" });
+  const register_User = async (data) => {
+    await axios
+      .post("https://emp-api-v2.onrender.com/auth/register", data)
+      .then((res) => {
+        if (res) {
+          toast(res.data.message, {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+          });
+          mesSend(res.data.message);
+          reset()
+          router.push("/auth/login");
+        }
+      });
   };
+
   return (
-    <div>
+    <React.Fragment>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      {/* Same as */}
+      <ToastContainer />
       <div className={styles.login_wrp}>
         <div className="container">
           <div className="row">
             <div className="col-12">
               <h1>Account Register</h1>
               <p>
-                If you are already a member you can login with your email
+                If you are already a member, you can login with your email
                 address and password.
               </p>
-              <form>
+              <form onSubmit={handleSubmit(register_User)}>
                 <div className={styles.login}>
                   <p>First Name</p>
-                  <div class="form-floating mb-3">
+                  <div className="form-floating mb-3">
                     <input
                       type="text"
                       className={classNames("form-control", styles.inputs)}
                       id="floatingInput"
-                      placeholder="name@example.com"
-                      value={fName}
-                      onChange={(e) => setFName(e.target.value)}
+                      placeholder="First Name"
+                      {...register("Fname", {
+                        required: "First name is required",
+                        maxLength: {
+                          value: 50,
+                          message:
+                            "First name should be less than 50 characters",
+                        },
+                      })}
                     />
-                    <label for="floatingInput">First Name</label>
+                    <label htmlFor="floatingInput">First Name</label>
+                    {errors.Fname && (
+                      <p role="alert" style={{ color: "red" }}>
+                        {errors.Fname.message}
+                      </p>
+                    )}
                   </div>
+
                   <p>Last Name</p>
-                  <div class="form-floating">
+                  <div className="form-floating">
                     <input
                       type="text"
                       className={classNames("form-control", styles.inputs)}
                       id="floatingPassword"
-                      placeholder="Password"
-                      value={lName}
-                      onChange={(e) => setLName(e.target.value)}
+                      placeholder="Last Name"
+                      {...register("Lname", {
+                        required: "Last name is required",
+                        maxLength: {
+                          value: 50,
+                          message:
+                            "Last name should be less than 50 characters",
+                        },
+                      })}
                     />
-                    <label for="floatingPassword">Last Name</label>
+                    <label htmlFor="floatingPassword">Last Name</label>
+                    {errors.Lname && (
+                      <p role="alert" style={{ color: "red" }}>
+                        {errors.Lname.message}
+                      </p>
+                    )}
                   </div>
+
                   <p>Email</p>
-                  <div class="form-floating">
+                  <div className="form-floating">
                     <input
                       type="email"
                       className={classNames("form-control", styles.inputs)}
-                      id="floatingPassword"
-                      placeholder="Password"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      id="floatingEmail"
+                      placeholder="Email address"
+                      {...register("email", {
+                        required: "Email is required",
+                        pattern: {
+                          value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                          message: "Please enter a valid Email Address",
+                        },
+                      })}
                     />
-                    <label for="floatingPassword">Email address</label>
+                    <label htmlFor="floatingEmail">Email address</label>
+                    {errors.email && (
+                      <p role="alert" style={{ color: "red" }}>
+                        {errors.email.message}
+                      </p>
+                    )}
                   </div>
+
                   <p>Choose a gender</p>
-                  <div class="form-floating">
+                  <div className="form-floating">
                     <select
                       className={classNames("form-control", styles.inputs)}
                       id="floatingSelect"
-                      aria-label="Floating label select example"
-                      onChange={(e) => setGender(e.target.value)}
-                      value={gender}
+                      {...register("gender", {
+                        required: "Gender is required",
+                        validate: (value) =>
+                          value !== "Select Gender" || "Please select a gender",
+                      })}
                     >
-                      <option selected>Gender</option>
+                      <option value="Select Gender">Select Gender</option>
                       <option value="Male">Male</option>
                       <option value="Female">Female</option>
                       <option value="Other">Other</option>
                     </select>
-                    <label for="floatingSelect">Choose a gender</label>
-                  </div>
-                  <p>Password</p>
-                  <div class="form-floating">
-                    <input
-                      type="password"
-                      className={classNames("form-control", styles.inputs)}
-                      id="floatingPassword"
-                      placeholder="Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                    <label for="floatingPassword">Password</label>
-                  </div>
-                  <p>Confirm Password</p>
-                  <div class="form-floating">
-                    <input
-                      type="password"
-                      className={classNames("form-control", styles.inputs)}
-                      id="floatingPassword"
-                      placeholder="Password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                    <label for="floatingPassword">Confirm Password</label>
+                    <label htmlFor="floatingSelect">Choose a gender</label>
+                    {errors.gender && (
+                      <p role="alert" style={{ color: "red" }}>
+                        {errors.gender.message}
+                      </p>
+                    )}
                   </div>
 
-                  <button type="button" onClick={register_User}>
-                    Register
-                  </button>
+                  <p>Password</p>
+                  <div className="form-floating">
+                    <input
+                      type="password"
+                      className={classNames("form-control", styles.inputs)}
+                      id="floatingPassword"
+                      placeholder="Password"
+                      {...register("password", {
+                        required: "Password is required",
+                      })}
+                    />
+                    <label htmlFor="floatingPassword">Password</label>
+                    {errors.password && (
+                      <p role="alert" style={{ color: "red" }}>
+                        {errors.password.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <p>Confirm Password</p>
+                  <div className="form-floating">
+                    <input
+                      type="password"
+                      className={classNames("form-control", styles.inputs)}
+                      id="floatingConfirmPassword"
+                      placeholder="Confirm Password"
+                      {...register("confirmPassword", {
+                        required: "Confirm password is required",
+                        validate: (value) => {
+                          return (
+                            value === watch("password") ||
+                            "Passwords do not match"
+                          );
+                        },
+                      })}
+                    />
+                    <label htmlFor="floatingConfirmPassword">
+                      Confirm Password
+                    </label>
+                    {errors.confirmPassword && (
+                      <p role="alert" style={{ color: "red" }}>
+                        {errors.confirmPassword.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <button type="submit">Register</button>
+
+                  <p>{messend}</p>
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 
