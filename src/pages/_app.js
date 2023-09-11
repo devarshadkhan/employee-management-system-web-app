@@ -1,4 +1,6 @@
 import '@/styles/globals.css'
+  import 'react-toastify/dist/ReactToastify.css';
+
 import { useEffect } from 'react';
 import useSWR from 'swr'
 
