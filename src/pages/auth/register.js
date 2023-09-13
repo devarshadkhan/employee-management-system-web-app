@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
+import Link from "next/link";
 const register = () => {
   const router = useRouter();
   const [messend, mesSend] = useState();
@@ -214,6 +215,11 @@ const register = () => {
                 </div>
               </form>
             </div>
+            <div className="col-12">
+                <div className={styles.resg}>
+                <h6 className={styles.acc}>Do have an account ? <Link href={"/auth/login"} className={styles.asspan}>Login here</Link> </h6>
+                </div>
+              </div>
           </div>
         </div>
       </div>
