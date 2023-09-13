@@ -24,7 +24,7 @@ font-style: normal;
 font-weight: 400;
 line-height: 28px; /* 155.556% */
 }
-.login_wrp p span{
+.login_wrp .dsadaas{
     display: block;
 }
 
@@ -67,4 +67,23 @@ width: 100%;
 border: none;
 padding: 23px;
 margin-top: 2rem;
+}
+
+/* .login_wrp .resg{} */
+.login_wrp .resg h6{
+    color: #696F79;
+font-family: Inter;
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+}
+.login_wrp .resg h6 a{
+    color: #2C73EB !important;
+font-family: Inter;
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+text-decoration: none;
 }
