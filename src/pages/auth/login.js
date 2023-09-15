@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styles from "@/styles/auth/Login.module.css";
 import axios from "axios";
 import classNames from "classnames";
@@ -6,10 +6,12 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
 import { useRouter } from "next/router";
+import { useContextAPi} from "../context/ContextAPi";
+import Loader from "@/components/Loader/Loader";
 const login = () => {
-  const router = useRouter()
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const router = useRouter();
+
+  const {isloading,startLoading,stopLoading} = useContextAPi();
   const {
     register,
     setValue,
@@ -21,30 +23,35 @@ const login = () => {
     formState: { errors },
   } = useForm({ mode: "onChange", reValidateMode: "onChange" });
   const login_User = async (data) => {
-    await axios.post("https://emp-api-v2.onrender.com/auth/login",data)
-    .then((res)=>{
-      if(res){
-        localStorage.setItem("token",res.data.token)
-       router.push("/")
-      }
-    })
-    .catch((error)=>{
-      console.log(error);
-      toast(error.response ? error.response.data.message : error.message, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-      });
-    })
+    startLoading()
+    await axios
+      .post("https://emp-api-v2.onrender.com/auth/login", data)
+      .then((res) => {
+        if (res) {
+          localStorage.setItem("token", res.data.token);
+          router.push("/dashboard");
+        }
+        stopLoading()
+      })
+      .catch((error) => {
+        console.log(error);
+        toast(error.response ? error.response.data.message : error.message, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+        stopLoading()
+      })
+     
   };
   return (
     <div>
-    <ToastContainer
+      <ToastContainer
         position="top-right"
         autoClose={2000}
         hideProgressBar={false}
@@ -62,8 +69,10 @@ const login = () => {
             <div className="col-12">
               <h1>Account Login</h1>
               <p>
-                If you are already a member you can login with <span className="dsadaas">your email
-                address and password.</span>
+                If you are already a member you can login with{" "}
+                <span className="dsadaas">
+                  your email address and password.
+                </span>
               </p>
               <form onSubmit={handleSubmit(login_User)}>
                 <div className={styles.login}>
@@ -71,7 +80,7 @@ const login = () => {
                   <div class="form-floating mb-3">
                     <input
                       type="text"
-                      className={classNames("form-control",styles.inputs )}
+                      className={classNames("form-control", styles.inputs)}
                       id="floatingInput"
                       placeholder="name@example.com"
                       // value={email}
@@ -95,7 +104,7 @@ const login = () => {
                   <div class="form-floating">
                     <input
                       type="password"
-                       className={classNames("form-control",styles.inputs )}
+                      className={classNames("form-control", styles.inputs)}
                       id="floatingPassword"
                       placeholder="Password"
                       // value={password}
@@ -112,15 +121,24 @@ const login = () => {
                     )}
                   </div>
 
-                  <button type="submit" >Login</button>
+                  <button type="submit">
+             
+                   {isloading?<> <Loader /></>:"Login"}
+                
+                  </button>
                 </div>
               </form>
             </div>
-              <div className="col-12">
-                <div className={styles.resg}>
-                <h6 className={styles.acc}>Dont have an account ? <Link href={"/auth/register"} className={styles.asspan}>Sign up here</Link> </h6>
-                </div>
+            <div className="col-12">
+              <div className={styles.resg}>
+                <h6 className={styles.acc}>
+                  Dont have an account ?{" "}
+                  <Link href={"/auth/register"} className={styles.asspan}>
+                    Sign up here
+                  </Link>{" "}
+                </h6>
               </div>
+            </div>
           </div>
         </div>
       </div>
