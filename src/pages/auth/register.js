@@ -6,9 +6,12 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import Link from "next/link";
+import { useContextAPi } from "../context/ContextAPi";
+import Loader from "@/components/Loader/Loader";
 const register = () => {
   const router = useRouter();
   const [messend, mesSend] = useState();
+  const {isloading,startLoading,stopLoading} = useContextAPi();
   const {
     register,
     setValue,
@@ -20,6 +23,7 @@ const register = () => {
     formState: { errors },
   } = useForm({ mode: "onChange", reValidateMode: "onChange" });
   const register_User = async (data) => {
+    startLoading()
     await axios
       .post("https://emp-api-v2.onrender.com/auth/register", data)
       .then((res) => {
@@ -37,6 +41,7 @@ const register = () => {
           mesSend(res.data.message);
           reset()
           router.push("/auth/login");
+          stopLoading()
         }
       });
   };
@@ -209,7 +214,11 @@ const register = () => {
                     )}
                   </div>
 
-                  <button type="submit">Register</button>
+                  <button type="submit">
+             
+                   {isloading?<> <Loader /></>:"Register"}
+                
+                  </button>
 
                   <p>{messend}</p>
                 </div>

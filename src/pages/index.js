@@ -9,10 +9,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
 const router = useRouter()
-useEffect(() => {
-  console.log("useEffect is running"); // Add this for debugging
-  router.push("/auth/login")
-}, []);
+// useEffect(() => {
+//   console.log("useEffect is running"); // Add this for debugging
+//   router.push("/auth/login")
+// }, []);
 // useEffect(() => {
 //   // Simulate a successful login (replace this with your actual login logic)
 
@@ -33,7 +33,7 @@ console.log("Rendered Home"); // Add this for debugging
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-   <h1>Welcome to our  Dashboard</h1>
+ 
     </>
   )
 }
