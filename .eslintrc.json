@@ -2,7 +2,8 @@
 //   "extends": "next/core-web-vitals"
 // }
 {
-  "extends": ["next/babel","next/core-web-vitals"]
+  "extends": ["next/babel","next/core-web-vitals"],
+  "pageExtensions": ["mdx", "md", "jsx", "js", "tsx", "ts"],
 }
 // {
 //   "eslintConfig": {
