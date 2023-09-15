@@ -3,18 +3,7 @@
 // }
 {
   "extends": ["next/babel","next/core-web-vitals"],
-  "pageExtensions": [".mdx", ".md", ".jsx", ".js", ".tsx", ".ts",".json"],
-  
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
-    "ecmaFeatures": {
-        "jsx": true
-    }
-},
-"rules": {
-    "semi": 2
-}
+  "pageExtensions": [".jsx", ".js", ".tsx", ".ts",".json"]
 }
 // {
 //   "eslintConfig": {
