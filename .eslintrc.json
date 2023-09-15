@@ -3,7 +3,7 @@
 // }
 {
   "extends": ["next/babel","next/core-web-vitals"],
-  "pageExtensions": ["mdx", "md", "jsx", "js", "tsx", "ts","json"],
+  "pageExtensions": [".mdx", ".md", ".jsx", ".js", ".tsx", ".ts",".json"],
   
   "parserOptions": {
     "ecmaVersion": 6,
