@@ -374,3 +374,513 @@
 // };
 
 // export default register;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// crud operation and employee
+
+// import React, { useEffect, useState } from "react";
+// import styles from "@/styles/Dashboard/Dashboard.module.css";
+// import axios from "axios";
+// import { convertToIndianTime, convertTounitTime } from "../utils/constant/Time";
+// const index = () => {
+//   const [employee, setEmployee] = useState([]);
+//   const [showModal, setShowModal] = useState(false);
+//   const [modalTitle, setModalTitle] = useState("Add Employee");
+//   const [editingEmployeeId, setEditingEmployeeId] = useState(null);
+
+//   // Add Employee Hooks
+
+//   const [name, setName] = useState();
+//   const [email, setEmail] = useState();
+//   const [phoneNo, setPhoneNo] = useState();
+//   const [status, setStatus] = useState();
+//   const [jobType, setJobType] = useState();
+//   const [role, setRole] = useState("");
+
+//   const clearForm = () => {
+//     setName("");
+//     setEmail("");
+//     setPhoneNo("");
+//     setStatus("");
+//     setJobType("");
+//     setRole("");
+//   };
+//   // const addEmployee = async () => {
+//   //   try {
+//   //     await axios
+//   //       .post("http://localhost:8000/employee", {
+//   //         name: name,
+//   //         email: email,
+//   //         PhoneNo: phoneNo,
+//   //         Status: status,
+//   //         JobType: jobType,
+//   //         role: role,
+//   //       })
+//   //       .then((res) => {
+//   //         clearForm();
+//   //         console.log(res);
+//   //       });
+//   //   } catch (error) {
+//   //     console.log(error);
+//   //   }
+//   // };
+//   /**
+//    *
+//    * @param {Tooggle Modal} editEmployeeId
+//    */
+//   const toggleModal = (editEmployeeId = null) => {
+//     if (editEmployeeId) {
+//       // Editing an existing employee
+//       setModalTitle("Edit Employee");
+//       setEditingEmployeeId(editEmployeeId);
+
+//       // Find the employee being edited from the employee array
+//       const employeeToEdit = employee.find(
+//         (item) => item.id === editEmployeeId
+//       );
+
+//       if (employeeToEdit) {
+//         // Set the form fields with the employee data
+//         setName(employeeToEdit.name);
+//         setEmail(employeeToEdit.email);
+//         setPhoneNo(employeeToEdit.PhoneNo);
+//         setStatus(employeeToEdit.Status);
+//         setJobType(employeeToEdit.JobType);
+//         setRole(employeeToEdit.role);
+//       }
+//     } else {
+//       // Adding a new employee
+//       setModalTitle("Add Employee");
+//       setEditingEmployeeId(null);
+
+//       // Clear the form fields
+//       clearForm();
+//     }
+//     setShowModal(true);
+//   };
+
+//   /**
+//    * @param {GET Employee API }
+//    */
+//   const employeeAPI = async () => {
+//     await axios.get("http://localhost:8000/employee").then((res) => {
+//       setEmployee(res.data);
+//     });
+//   };
+
+//   /**
+//    * @param {Delete Employee API }
+//    */
+//   const delEmployee = async (id) => {
+//     await axios.delete(`http://localhost:8000/employee/${id}`).then((res) => {
+//       setEmployee((prevEmployees) =>
+//         prevEmployees.filter((employee) => employee.id !== id)
+//       );
+//     });
+//   };
+
+//   useEffect(() => {
+//     employeeAPI();
+//   }, []);
+
+//   /**
+//    * @param {Add and Edit Employee API }
+//    */
+
+//   const addOrEditEmployee = async () => {
+//     try {
+//       if (editingEmployeeId) {
+//         // Editing an existing employee
+//         await axios.put(`http://localhost:8000/employee/${editingEmployeeId}`, {
+//           name: name,
+//           email: email,
+//           PhoneNo: phoneNo,
+//           Status: status,
+//           JobType: jobType,
+//           role: categories,
+//         });
+//       } else {
+//         // Adding a new employee
+//         await axios.post("http://localhost:8000/employee", {
+//           name: name,
+//           email: email,
+//           PhoneNo: phoneNo,
+//           Status: status,
+//           JobType: jobType,
+//           role: categories,
+//         });
+//       }
+//       // After successful add or edit, close the modal and refresh the employee list
+//       clearForm();
+//       setShowModal(false);
+//       employeeAPI();
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
+//   const [categories, setCategories] = useState([]);
+//   const [category, setCategory] = useState("");
+//   const addCategory = () => {
+//     if (role?.trim() !== "") {
+//       // Ensure category is not empty or just spaces
+//       setCategories([...categories, role]);
+//       setRole("");
+//     }
+//   };
+
+//   const deleteCategory = (index) => {
+//     const updatedCategories = [...categories];
+//     updatedCategories.splice(index, 1);
+//     setCategories(updatedCategories);
+//   };
+//   return (
+//     <div>
+//       <div className={styles.dashboard}>
+//         <div className="container-fluid">
+//           <div className="row">
+//             <div className={"col-12 col-md-12" + " " + styles.heading}>
+//               <h1>Welcome to our Dashboard</h1>
+//               <button
+//                 data-bs-toggle="modal"
+//                 data-bs-target="#exampleModal"
+//                 className="btn btn-primary"
+//                 onClick={() => toggleModal()}
+//               >
+//                 Add Employee
+//               </button>
+//             </div>
+//             <div className="col-12 col-md-12">
+//               <table class="table custom-table">
+//                 <thead>
+//                   <tr>
+//                     <th scope="col">#</th>
+//                     <th scope="col">id</th>
+//                     <th scope="col">Name</th>
+//                     <th scope="col">Email</th>
+//                     <th scope="col">Phone No.</th>
+//                     <th scope="col">Status</th>
+//                     <th scope="col">Job Type</th>
+//                     <th scope="col">Designation</th>
+//                     <th scope="col">Time</th>
+//                     <th scope="col"></th>
+//                   </tr>
+//                 </thead>
+//                 <tbody>
+//                   {employee?.map((item, i) => {
+//                     return (
+//                       <>
+//                         <tr key={i}>
+//                           <th scope="row">{i + 1}</th>
+//                           <th scope="row">{item.id}</th>
+//                           <td>{item.name}</td>
+//                           <td>{item.email}</td>
+//                           <td>{item.PhoneNo}</td>
+//                           <td>
+//                             {item.Status === "active" ? (
+//                               <>
+//                                 <span style={{ color: "#32de84" }}>active</span>
+//                               </>
+//                             ) : (
+//                               <>
+//                                 <span style={{ color: "#FF0800" }}>
+//                                   inActive
+//                                 </span>
+//                               </>
+//                             )}
+//                           </td>
+//                           <td>{item.JobType}</td>
+//                           <td>  {Array.isArray(item.role) ? item.role.join(', ') : item.role}
+// </td>
+
+//                           <td>{convertToIndianTime(item.id)}</td>
+//                           <td>
+//                             <div class="dropdown">
+//                               <button
+//                                 class="btn  "
+//                                 type="button"
+//                                 data-bs-toggle="dropdown"
+//                                 aria-expanded="false"
+//                               >
+//                                 <svg
+//                                   xmlns="http://www.w3.org/2000/svg"
+//                                   width="16"
+//                                   height="16"
+//                                   fill="currentColor"
+//                                   class="bi bi-three-dots-vertical"
+//                                   viewBox="0 0 16 16"
+//                                 >
+//                                   <path d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+//                                 </svg>
+//                               </button>
+//                               <ul class="dropdown-menu">
+//                                 <li>
+//                                   <a
+//                                     class="dropdown-item"
+//                                     data-bs-toggle="modal"
+//                                     data-bs-target="#exampleModal"
+//                                     onClick={() => toggleModal(item.id)}
+//                                   >
+//                                     edit
+//                                   </a>
+//                                 </li>
+//                                 <li>
+//                                   <a
+//                                     class="dropdown-item"
+//                                     onClick={() => delEmployee(item.id)}
+//                                   >
+//                                     delete
+//                                   </a>
+//                                 </li>
+//                               </ul>
+//                             </div>
+//                           </td>
+//                         </tr>
+//                       </>
+//                     );
+//                   })}
+//                 </tbody>
+//               </table>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Employee Modal */}
+
+//       <div
+//         class="modal fade"
+//         id="exampleModal"
+//         tabindex="-1"
+//         aria-labelledby="exampleModalLabel"
+//         aria-hidden="true"
+//       >
+//         <div class="modal-dialog">
+//           <div class="modal-content">
+//             <div class="modal-header">
+//               <h1 class="modal-title fs-5" id="exampleModalLabel">
+//                 Modal title
+//               </h1>
+//               <button
+//                 type="button"
+//                 class="btn-close"
+//                 data-bs-dismiss="modal"
+//                 aria-label="Close"
+//               ></button>
+//             </div>
+//             <div class="modal-body">
+//               {modalTitle === "Add Employee" ? (
+//                 <></>
+//               ) : (
+//                 <>
+//                   <input
+//                     type="text"
+//                     placeholder="ID"
+//                     value={editingEmployeeId}
+//                     disabled
+//                     className="form-control mb-4"
+//                   />
+//                 </>
+//               )}
+//               <input
+//                 type={modalTitle === "Add Employee" ? "text" : "text"}
+//                 placeholder="name"
+//                 value={name}
+//                 onChange={(e) => setName(e.target.value)}
+//                 className="form-control mb-4"
+//               />
+//               <input
+//                 type={modalTitle === "Add Employee" ? "email" : "email"}
+//                 placeholder="enter email"
+//                 className="form-control mb-4"
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
+//               />
+//               <input
+//                 type={modalTitle === "Add Employee" ? "number" : "number"}
+//                 placeholder="enter phone number"
+//                 className="form-control mb-4"
+//                 value={phoneNo}
+//                 onChange={(e) => setPhoneNo(e.target.value)}
+//               />
+//               <select
+//                 class="form-select"
+//                 aria-label="Default select example"
+//                 className="form-control mb-3"
+//                 value={status}
+//                 onChange={(e) => setStatus(e.target.value)}
+//               >
+//                 <option selected>Open this select menu status</option>
+//                 <option value="active">active</option>
+//                 <option value="inActive">inActive</option>
+//               </select>
+//               <select
+//                 class="form-select mt-4 mb-3"
+//                 aria-label="Default select example"
+//                 value={jobType}
+//                 onChange={(e) => setJobType(e.target.value)}
+//               >
+//                 <option selected>Open this select menu Job Type</option>
+//                 <option value="Permanent">Permanent</option>
+//                 <option value="Full Time">Full Time</option>
+//                 <option value="Part Time">Part Time</option>
+//                 <option value="Probation">Probation</option>
+//                 <option value="Intern">Intern</option>
+//                 <option value="Freelancer">Freelancer</option>
+//               </select>
+
+//              <div style={{display:'flex',justifyContent:"space-between",alignItems:"center"}}>
+//              <input
+//                 type={modalTitle === "Add Employee" ? "text" : "text"}
+//                 placeholder="Designation Add"
+//                 className="form-control "
+//                 value={role}
+//                 onChange={(e) => setRole(e.target.value)}
+//               />
+//               <button onClick={addCategory}>+</button>
+//              </div>
+//             </div>
+
+//             <div>
+//               {categories.map((cat, index) => (
+//                 <p key={index}>
+//                   {cat}
+//                   <button onClick={() => deleteCategory(index)}>X</button>
+//                 </p>
+//               ))}
+//             </div>
+//             <div class="modal-footer">
+//               <button
+//                 type="button"
+//                 class="btn btn-secondary"
+//                 data-bs-dismiss="modal"
+//               >
+//                 Close
+//               </button>
+//               <button
+//                 type="button"
+//                 class="btn btn-primary"
+//                 onClick={addOrEditEmployee}
+//               >
+//                 {modalTitle === "Add Employee"
+//                   ? "Add Employee"
+//                   : "Edit Employee"}
+//               </button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default index;
+
+

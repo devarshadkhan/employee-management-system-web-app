@@ -1,0 +1,28 @@
+.heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+  
+  .top-information,
+  .bottom-information {
+    padding: 0 20px;
+  }
+  
+  table.dataTable.dtr_inline.collapsed>tbody>tr[role="row"]>td:first-child:before,
+  table.dataTable.dtr_inline.collapsed>tbody>tr[role="row"]>th:first-child:before {
+     background-color: #29cc97;
+     top: 14px;
+     width: 16px;
+     height: 16px;
+     line-height: 16px;
+     border: 0;
+     font-weight: bold;
+     box-shadow: none;
+    }
+  
+  table.dataTable.dtr_inline.collapsed>tbody>tr.parent>td:first-child:before, table.dataTable.dtr_inline.collapsed>tbody>tr.parent>th:first-child:before {
+    background-color: fec400;
+  }
