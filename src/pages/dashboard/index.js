@@ -3,6 +3,7 @@ import styles from "@/styles/Dashboard/Dashboard.module.css";
 import axios from "axios";
 import { convertToIndianTime } from "../utils/constant/Time";
 import { ArrowDown, ArrowRight, ArrowUp } from "react-bootstrap-icons";
+import { useContextAPi } from "../context/ContextAPi";
 
 const index = () => {
   const [employee, setEmployee] = useState([]);
@@ -138,7 +139,9 @@ const index = () => {
     updatedCategories.splice(index, 1);
     setCategories(updatedCategories);
   };
-
+// const {filter,setfilter} = useContextAPi()
+const [statusFilter, setStatusFilter] = useState("");
+const [jobTypeFilter, setJobTypeFilter] = useState("");
   const [filter,setfilter] = useState(" ")
   const [categoryFilter,setCategoryFilter] = useState(" ")
   const handleFilter = (e)=>{
@@ -147,11 +150,17 @@ const index = () => {
   const handleByCategory = (e)=>{
     setCategoryFilter(e.target.value)
   }
+  // const filteredEmployeeByCategory = employee.filter((item) => {
+  //   const statusMatches = statusFilter === "" || item.Status === statusFilter;
+  //   const jobTypeMatches = jobTypeFilter === "" || item.JobType === jobTypeFilter;
+
+  //   return statusMatches && jobTypeMatches;
+  // });
   const filteredEmployee = employee.filter((item)=>{
     if(filter === ""|| filter === " " ){
       return true
     }
-    return item.Status === filter
+    return item.Status === filter 
   })
   const filteredEmployeeByCategory = filteredEmployee.filter((item)=>{
     if(categoryFilter === ""|| categoryFilter === " " ){
@@ -166,12 +175,12 @@ const index = () => {
           <div className="row">
             <div className={"col-12 col-md-12" + " " + styles.heading}>
               <h1>Welcome to our Dashboard</h1>
-              <select onChange={handleFilter}>
+              <select onChange={handleFilter} value={filter}>
                 <option value="">Filter by Status</option>
                 <option value="active">active</option>
                 <option value="inActive">inActive</option>
               </select>
-              <select onChange={handleByCategory}>
+              <select onChange={handleByCategory} value={categoryFilter}>
                 <option value="">Filter by Job Category</option>
                 <option value="Permanent">Permanent</option>
                 <option value="Full Time">Full Time</option>

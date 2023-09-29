@@ -3,14 +3,20 @@ import React, { createContext, useContext, useState } from 'react'
 export  const ContextConnect = createContext()
 export const ContextAPiProvider  = ({children}) => {
     const [isloading,setIsLoading] = useState(false)
+    const [filter,setfilter] = useState(" ")
     const startLoading = ()=>{
         setIsLoading(true)
     }
     const stopLoading = ()=>{
         setIsLoading(false)
     }
+
+    const onHandleChange = (e)=>{
+      setfilter(e.target.value)
+    }
+   
   return (
-   <ContextConnect.Provider value={{ isloading, startLoading, stopLoading }}>
+   <ContextConnect.Provider value={{ isloading, startLoading, stopLoading, filter, setfilter, onHandleChange }}>
     {children}
    </ContextConnect.Provider>
   )
