@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "@/styles/Dashboard/Dashboard.module.css";
 import axios from "axios";
 import { convertToIndianTime } from "../utils/constant/Time";
-import { ArrowDown, ArrowRight, ArrowUp } from 'react-bootstrap-icons';
+import { ArrowDown, ArrowRight, ArrowUp } from "react-bootstrap-icons";
 
 const index = () => {
   const [employee, setEmployee] = useState([]);
@@ -30,7 +30,7 @@ const index = () => {
       return b[sortColumn].localeCompare(a[sortColumn]);
     }
   });
-  
+
   const handleSort = (column) => {
     if (column === sortColumn) {
       // If the same column is clicked, reverse the sorting order
@@ -80,13 +80,13 @@ const index = () => {
   };
 
   const employeeAPI = async () => {
-    await axios.get("http://localhost:8000/employee").then((res) => {
+    await axios.get("https://emp-api-v2.onrender.com/employee").then((res) => {
       setEmployee(res.data);
     });
   };
 
   const delEmployee = async (id) => {
-    await axios.delete(`http://localhost:8000/employee/${id}`).then((res) => {
+    await axios.delete(`https://emp-api-v2.onrender.com/employee/${id}`).then((res) => {
       setEmployee((prevEmployees) =>
         prevEmployees.filter((employee) => employee.id !== id)
       );
@@ -100,7 +100,7 @@ const index = () => {
   const addOrEditEmployee = async () => {
     try {
       if (editingEmployeeId) {
-        await axios.put(`http://localhost:8000/employee/${editingEmployeeId}`, {
+        await axios.put(`https://emp-api-v2.onrender.com/employee/${editingEmployeeId}`, {
           name: name,
           email: email,
           PhoneNo: phoneNo,
@@ -109,7 +109,7 @@ const index = () => {
           role: categories,
         });
       } else {
-        await axios.post("http://localhost:8000/employee", {
+        await axios.post("https://emp-api-v2.onrender.com/employee", {
           name: name,
           email: email,
           PhoneNo: phoneNo,
@@ -139,6 +139,26 @@ const index = () => {
     setCategories(updatedCategories);
   };
 
+  const [filter,setfilter] = useState(" ")
+  const [categoryFilter,setCategoryFilter] = useState(" ")
+  const handleFilter = (e)=>{
+    setfilter(e.target.value)
+  }
+  const handleByCategory = (e)=>{
+    setCategoryFilter(e.target.value)
+  }
+  const filteredEmployee = employee.filter((item)=>{
+    if(filter === ""|| filter === " " ){
+      return true
+    }
+    return item.Status === filter
+  })
+  const filteredEmployeeByCategory = filteredEmployee.filter((item)=>{
+    if(categoryFilter === ""|| categoryFilter === " " ){
+      return true
+    }
+    return item.JobType === categoryFilter
+  })
   return (
     <div>
       <div className={styles.dashboard}>
@@ -146,6 +166,20 @@ const index = () => {
           <div className="row">
             <div className={"col-12 col-md-12" + " " + styles.heading}>
               <h1>Welcome to our Dashboard</h1>
+              <select onChange={handleFilter}>
+                <option value="">Filter by Status</option>
+                <option value="active">active</option>
+                <option value="inActive">inActive</option>
+              </select>
+              <select onChange={handleByCategory}>
+                <option value="">Filter by Job Category</option>
+                <option value="Permanent">Permanent</option>
+                <option value="Full Time">Full Time</option>
+                <option value="Part Time">Part Time</option>
+                <option value="Freelancer">Freelancer</option>
+                <option value="Probation">Probation</option>
+                <option value="Intern">Intern</option>
+              </select>
               <button
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModal"
@@ -164,7 +198,15 @@ const index = () => {
                     <th scope="col" onClick={() => handleSort("name")}>
                       Name
                       <i class="bi bi-arrow-up"></i>
-                      {sortOrder === "asc" ? <><ArrowUp /></> : <><ArrowDown /></>}
+                      {sortOrder === "asc" ? (
+                        <>
+                          <ArrowUp />
+                        </>
+                      ) : (
+                        <>
+                          <ArrowDown />
+                        </>
+                      )}
                       {/* <ArrowUp /> */}
                       {/* className={`bi bi-sort-down${
                           sortOrder === "asc" ? "-up" : "-down"
@@ -180,7 +222,7 @@ const index = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {sortedEmployee?.map((item, i) => (
+                 {filteredEmployeeByCategory.length === 0 ? <><tr><td>No Data Found</td></tr></>:<> {filteredEmployeeByCategory?.map((item, i) => (
                     <tr key={i}>
                       <th scope="row">{i + 1}</th>
                       <th scope="row">{item.id}</th>
@@ -200,8 +242,7 @@ const index = () => {
                           ? item.role.join(", ")
                           : item.role}
                       </td>
-                      <td>{convertToIndianTime(item.
-                      id)}</td>
+                      <td>{convertToIndianTime(item.id)}</td>
                       <td>
                         <div class="dropdown">
                           <button
@@ -244,7 +285,7 @@ const index = () => {
                         </div>
                       </td>
                     </tr>
-                  ))}
+                  ))}</>}
                 </tbody>
               </table>
             </div>
